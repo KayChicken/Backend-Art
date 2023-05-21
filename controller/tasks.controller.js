@@ -19,7 +19,7 @@ class TasksController {
         try{
             const id = req.params.id
             const tasks = await db.query("SELECT * FROM tasks_quiz WHERE task_id = $1" , [id])
-            res.status(200).json({...tasks.rows})
+            res.status(200).json(tasks.rows)
 
         }
 
