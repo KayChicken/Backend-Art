@@ -12,7 +12,7 @@ const app = express()
 app.use(express.json())
 
 
-app.user(newsRouter)
+app.use(newsRouter)
 app.use(userRouter)
 app.use(tasksRouter)
 

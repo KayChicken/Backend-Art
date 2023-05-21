@@ -5,4 +5,4 @@ import { newsController } from '../controller/news.controller.js'
 
 
 
-tasksRouter.get('/news', newsController.getNews)
+newsRouter.get('/news', newsController.getNews)

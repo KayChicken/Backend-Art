@@ -5,7 +5,7 @@ class NewsController {
     async getNews(req,res) {
         try {
             const news = await db.query("SELECT * FROM newsline")
-            res.json({...news.rows[0]})
+            res.json({...news.rows})
         }
 
 
