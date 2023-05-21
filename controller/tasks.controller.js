@@ -5,7 +5,7 @@ class TasksController {
     async getQuizes(req,res) {
         try {
             const tasks = await db.query("SELECT * FROM tasks_quiz")
-            res.status(200).json({...tasks.rows})
+            res.status(200).json(tasks.rows)
         }
 
         catch(err) {
