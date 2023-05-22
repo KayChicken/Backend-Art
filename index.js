@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8080
 const app = express()
 app.use(express.json())
 
-
+app.use('/uploads', express.static('uploads'))
 app.use(newsRouter)
 app.use(userRouter)
 app.use(tasksRouter)
