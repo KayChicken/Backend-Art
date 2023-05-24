@@ -50,6 +50,17 @@ class TasksController {
         }
     }
 
+    async getVideoGame(req,res) {
+        try {
+            const content = await db.query("SELECT * FROM tasks_video")
+            res.status(200).json(content.rows)
+        }
+
+        catch(err) {
+            return res.status(400).json({"message" : "Произошла ошибка"})
+        }
+    }
+
 }
 
 
