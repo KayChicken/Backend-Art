@@ -2,6 +2,11 @@ import { validationResult } from 'express-validator'
 import { db } from '../db.js'
 import  jwt  from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import { v4 as uuidv4 } from 'uuid';
+import { mailService } from '../service/mail-service.js';
+import { tokenService } from '../service/token-service.js';
+
+
 
 class UserController {
 
@@ -19,7 +24,7 @@ class UserController {
             if (!isValidPass) {
                 return res.status(400).json({"message" : "Неверный логин или пароль"})
             }
-
+            
             const token = jwt.sign({
                 id : user['user_id'],
 
@@ -62,14 +67,19 @@ class UserController {
             
             const salt = await bcrypt.genSalt(10);
             const hashPassword = await bcrypt.hash(password,salt)
-            const image = img ? img : "https://localhost:8080/static/defaultPhoto"
-            const newPerson = await db.query('INSERT INTO users (user_name,user_surname,user_lastname,user_login,user_hashPassword,user_age,user_email,user_phone,user_photo,user_education) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *',[name,surname,lastname,login,hashPassword,age,email,phone,image,education])
-            const token = jwt.sign({
-                id : newPerson.rows[0]['user_id'],
+            const image = img ? img : "https://demo-backend-s05i.onrender.com/uploads/default_photo.png"
+            const activationLink = uuidv4()
 
-            }, 'SECRET_KEY', {expiresIn: '30d'})
-      
-            res.json({...newPerson.rows,token})
+            const newPerson = await db.query('INSERT INTO users (user_name,user_surname,user_lastname,user_login,user_hashPassword,user_age,user_email,user_phone,user_photo,user_education,activationLink) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *',[name,surname,lastname,login,hashPassword,age,email,phone,image,education,activationLink])
+            const {user_id , isactivated} = newPerson.rows[0]
+            await mailService.sendActivationMail(email,`${process.env.API_URL}/activate/${activationLink}`)
+            const tokens = tokenService.generateToken({
+                id : user_id,
+                email,
+                isactivated
+            })
+            tokenService.saveToken(user_id, tokens.refreshToken)
+            res.json({...newPerson.rows, ...tokens})
         }
 
 
@@ -94,18 +104,31 @@ class UserController {
     }
 
 
-    async updateUser(req,res) {
-        const {id,name,surname,lastname,login,password,age,email,phone,photo,education} = await req.body
-        const user = await (await db.query('SELECT user_fio FROM users WHERE user_id = $1', [id]))
-        const user_fio = user.rows[0]['user_fio'].split(' ')
-        console.log(user_fio)
-        // const updateUser = await db.query('UPDATE users SET user_surname = $1 WHERE user_id = $2',[surname,id])
-        // res.json(updateUser)
+    async setActivateAccount (activationLink) {
+        const user = await db.query("SELECT * FROM users WHERE activationlink = $1", [activationLink])
+        const {user_id} = user.rows[0]
+        if (!user) {
+            throw new Error('Некорректная ссылка аткивации')
+        }
+        await db.query("UPDATE users SET isactivated = TRUE WHERE user_id = $1" , [user_id])
     }
 
-    async deleteUser(req,res) {
 
+
+
+    async activate(req,res) {
+       try {
+            const activationLink = req.params.link
+            await userController.setActivateAccount(activationLink)
+            return res.status(200).json({"message" : "Почта успешно была подтверждена"})
+       }
+       catch (err) {
+        res.status(400).json({"message" : "Произошла ошибка"})
+       }
     }
+
+    
+
 
 
 

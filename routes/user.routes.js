@@ -11,8 +11,7 @@ userRouter.post('/auth/login' , userController.loginUser)
 userRouter.post('/auth/registration' ,registerValidator ,userController.createUser)
 userRouter.get('/user' , userController.getUsers)
 userRouter.get('/user/:id' , userController.getOneUser)
-userRouter.put('/user' , userController.updateUser)
-userRouter.delete('/user/:id' , userController.deleteUser)
+userRouter.get('/activate/:link', userController.activate)
 
 
 
