@@ -93,13 +93,20 @@ class UserController {
 
     async getUsers(req,res) {
         const users = await db.query('SELECT * FROM users')
-        res.json(users)
+        res.json(users.rows)
     }
+
+
+    async getUsersRating(req,res) {
+        const users = await db.query('SELECT * FROM users ORDER BY user_rating DESC LIMIT 100')
+        res.json(users.rows)
+    }
+
+
 
     async getOneUser(req,res) {
         const id = req.params.id
         const oneUser = await db.query('SELECT * FROM users WHERE user_id = $1',[id])
-        // console.log(oneUser.rows[0]['user_id'])
         res.json(oneUser)
     }
 
