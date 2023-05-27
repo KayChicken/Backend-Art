@@ -107,7 +107,7 @@ class UserController {
 
     async getUsersRating(req, res) {
         try {
-            const users = (await db.query('SELECT * FROM users ORDER BY user_rating DESC LIMIT 2')).rows
+            const users = (await db.query('SELECT * FROM users ORDER BY user_rating DESC LIMIT 100')).rows
             const newData = users.map((data) => {
                 return {
                     user_id : data.user_id,
