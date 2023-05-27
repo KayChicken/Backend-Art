@@ -13,6 +13,7 @@ userRouter.get('/users' , userController.getUsers)
 userRouter.get('/user/:id' , userController.getOneUser)
 userRouter.get('/activate/:link', userController.activate)
 userRouter.get('/rate/users', userController.getUsersRating)
-
+userRouter.post('/auth/logout' , userController.logout)
+userRouter.post('/auth/refresh' , userController.refresh)
 
 

@@ -25,13 +25,16 @@ class UserController {
                 return res.status(400).json({"message" : "Неверный логин или пароль"})
             }
             
-            const token = jwt.sign({
-                id : user['user_id'],
 
-            }, 'SECRET_KEY', {expiresIn: '30d'})
+            const tokens = tokenService.generateToken({
+                id : user['user_id'],
+                email : user['user_email'],
+                isactivated : user['isactivated']
+            })
             
             const {user_hashpassword , ...userData} = user
-            res.json({...userData , token})
+            await tokenService.saveToken(user['user_id'], tokens.refreshToken)
+            res.json({...userData , ...tokens})
         }
 
         
@@ -78,7 +81,7 @@ class UserController {
                 email,
                 isactivated
             })
-            tokenService.saveToken(user_id, tokens.refreshToken)
+            await tokenService.saveToken(user_id, tokens.refreshToken)
             res.json({...newPerson.rows, ...tokens})
         }
 
@@ -133,6 +136,62 @@ class UserController {
         res.status(400).json({"message" : "Произошла ошибка"})
        }
     }
+
+
+    async logout(req,res) {
+        try {
+            const {refreshToken} = req.body
+            if (!refreshToken) {
+                return res.status(400).json({"message" : "Произошла ошибка"})
+            }
+            // Удалить куки из приложения
+            const token = await tokenService.removeToken(refreshToken)
+            return res.status(200).json({"message" : "logout"})
+        }
+
+        catch(err) {
+            res.status(400).json({"message" : "Произошла ошибка"})
+        }
+    }
+
+
+    async refresh(req,res) {
+        try {
+            const {refreshToken} = req.body // Достаём рефреш куку
+            if (!refreshToken) {
+                return res.status(400).json({"message" : "Произошла ошибка"})
+
+            }
+            
+            const userData = await tokenService.validateRefreshToken(refreshToken)
+            const tokenFromDB = await tokenService.findToken(refreshToken)
+            if (!userData || tokenFromDB.length === 0) {
+                
+                return res.status(400).json({"message" : "Произошла ошибка"})
+            }
+            
+            
+            const user = (await db.query("SELECT * FROM users WHERE user_id = $1",[userData.id])).rows[0]
+            const tokens = tokenService.generateToken({
+                id : user['user_id'],
+                email : user['user_email'],
+                isactivated : user['isactivated']
+            })
+            console.log(user['user_id'])
+            await tokenService.saveToken(user['user_id'], tokens.refreshToken)
+        
+            return res.status(200).json({...userData , ...tokens})
+
+
+
+
+        }
+
+        catch(err) {
+            res.status(400).json({"message" : "Произошла ошибка"})
+        }
+    }
+    
 
     
 
