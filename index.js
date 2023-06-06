@@ -23,4 +23,9 @@ app.use(tasksRouter)
 
 
 
-app.listen(PORT, () => console.log('server is started'))
+const server = app.listen(PORT, () => {
+    const { address, port } = server.address();
+    console.log(`Сервер ${address} запущен порт ${PORT}`)
+
+
+})
