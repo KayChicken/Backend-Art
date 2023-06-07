@@ -21,7 +21,7 @@ export const upload = multer({storage})
 uploadRouter.post('/upload' , upload.single('image'), (req,res) => {
     try {
         res.json({
-            url : `46.243.227.254:8080/upload/${req.file.originalname}`
+            url : `http://46.243.227.254:8080/upload/${req.file.originalname}`
         })
     }
 
