@@ -8,3 +8,4 @@ import { newsValidator } from '../validations/news.js'
 
 newsRouter.get('/news/:page', newsController.getNews)
 newsRouter.post('/news/create' , newsValidator,newsController.createNews)
+newsRouter.delete('/news/delete', newsController.deleteNews)

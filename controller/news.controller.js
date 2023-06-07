@@ -40,7 +40,26 @@ class NewsController {
         }
     }
 
+
+
+    async deleteNews(req,res) {
+
+
+        try {
+            
+            const {news_id} = req.body
+            await db.query("DELETE FROM newsline WHERE news_id = $1", [news_id])
+            res.status(200).json({"message" : "Новость была удалена"})
+        }
+        
+
+
+        catch {
+            return res.status(400).json({"message" : "Произошла ошибка"})
+        }
     
+
+    }
 }
 
 
