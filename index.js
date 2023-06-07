@@ -6,20 +6,25 @@ import { newsRouter } from './routes/news.routes.js'
 import { db } from './db.js'
 import cors from 'cors'
 import dotenv from 'dotenv'
-
+import multer from 'multer'
+import { uploadRouter } from './routes/upload.routes.js'
 
 const PORT = process.env.PORT || 8080
 
 
 
 const app = express()
+
+
 app.use(express.json())
 app.use(cors())
 dotenv.config()
 app.use('/uploads', express.static('uploads'))
+app.use('/upload', express.static('uploads/img'))
 app.use(newsRouter)
 app.use(userRouter)
 app.use(tasksRouter)
+app.use(uploadRouter)
 
 
 

@@ -60,6 +60,20 @@ class NewsController {
     
 
     }
+
+
+    async myNews (req,res) {
+        try {
+            const {user_id} = req.body
+            const myNews = await db.query("SELECT news_id,news_title,news_desc,news_img,user_name,user_surname,news_date FROM newsline JOIN users ON $1 = news_author ORDER BY news_id",[user_id])
+            return res.status(200).json(myNews.rows)
+
+        }
+
+        catch {
+            return res.status(400).json({"message" : "Произошла ошибка"})
+        }
+    }
 }
 
 
