@@ -7,7 +7,7 @@ export const registerValidator = [
     body('surname','Фамилия должна быть минимум 2 символа').isLength({min:2, max:64}),
     body('lastname', 'Отчество должно быть минимум два символа').isLength({min:2, max:64}),
     body('img','Некорректный URL фотографии').optional().isURL(),
-    body('phone','Некорректный телефонный номер').isLength({min:10, max:10}),
+
 
 ]
 
