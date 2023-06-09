@@ -34,7 +34,6 @@ class TasksController {
         try {
             const {quiz_id, user_answer} = req.body
             const id = req.userId
-            console.log(id)
             const isAnswee = await db.query("SELECT * FROM tasks_quiz_answers WHERE quiz_id = $1 AND fk_user_id = $2",[quiz_id,id])
             if (isAnswee.rowCount <= 0) {
                 const userRating = await db.query("UPDATE users SET user_rating = user_rating + 1 WHERE user_id = $1",[req.userId])
@@ -44,6 +43,23 @@ class TasksController {
             return res.status(200).json(isAnswee.rows)
             
             
+        }
+
+        catch(err) {
+            return res.status(400).json({"message" : "Произошла ошибка"})
+        }
+    }
+
+    async answerByVideo(req,res) {
+        try {
+            const {task_video_id , user_answer} = req.body
+            const id = req.userId
+            const isAnswee = await db.query("SELECT * FROM tasks_video_answers  WHERE task_video_id = $1 AND fk_user_id = $2",[task_video_id,id])
+            if (isAnswee.rowCount <= 0) {
+                const userRating = await db.query("UPDATE users SET user_rating = user_rating + 2 WHERE user_id = $1",[id])
+                const sendAnswer = await db.query("INSERT INTO tasks_video_answers VALUES ($1,$2,$3)",[task_video_id,id,user_answer])
+                return res.status(200).json(sendAnswer.rows)
+            }
         }
 
         catch(err) {
