@@ -76,6 +76,19 @@ class NewsController {
     }
 
 
+    async editNews (req,res) {
+        try {
+            const {news_id, news_title,news_desc} = req.body
+            await db.query("UPDATE newsline SET (news_title, news_desc) = ($1,$2) WHERE news_id = $3",[news_title, news_desc,news_id])
+            res.status(200).json({"message" : "Новость была изменена"})
+
+        }
+
+        catch {
+            return res.status(400).json({"message" : "Произошла ошибка"})
+        }
+    }
+
     
 }
 
