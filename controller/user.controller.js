@@ -31,7 +31,7 @@ class UserController {
                 email: user['user_email'],
                 isactivated: user['isactivated']
             })
-
+            
             const { user_hashpassword, ...userData } = user
             await tokenService.saveToken(user['user_id'], tokens.refreshToken)
             res.json({ ...userData, ...tokens })
