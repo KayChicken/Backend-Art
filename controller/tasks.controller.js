@@ -80,6 +80,31 @@ class TasksController {
         }
     }
 
+
+    async addAchievement(req,res) {
+        try {
+            const {achievement_id} = req.body
+            if (!achievement_id) {
+                return res.status(400).json({"message" : "Ошибка"})
+            }
+            const id = req.userId
+            const isAchievement = await db.query("SELECT user_id FROM users WHERE $1 = ANY(user_achivements) AND user_id = $2",[achievement_id, id])
+            if (isAchievement.rowCount <= 0) {
+                const achievement = await db.query("UPDATE users SET user_achivements = user_achivements || $1 WHERE user_id = $2",[[achievement_id], id])
+                
+                return res.status(200).json({"message" : "Новое достижение"})
+            }
+            return res.status(200).json({"message" : "Достижение уже получено"})
+            
+
+        }
+
+        catch(err) {
+            console.log(err)
+            return res.status(400).json({"message" : "Произошла ошибка"})
+        }
+    }
+
 }
 
 
