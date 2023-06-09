@@ -74,6 +74,9 @@ class NewsController {
             return res.status(400).json({"message" : "Произошла ошибка"})
         }
     }
+
+
+    
 }
 
 
