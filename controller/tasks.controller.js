@@ -52,6 +52,7 @@ class TasksController {
 
     async answerByVideo(req,res) {
         try {
+            console.log("answer")
             const {task_video_id , user_answer} = req.body
             const id = req.userId
             const isAnswee = await db.query("SELECT * FROM tasks_video_answers  WHERE task_video_id = $1 AND fk_user_id = $2",[task_video_id,id])
