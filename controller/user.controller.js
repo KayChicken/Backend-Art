@@ -226,7 +226,20 @@ class UserController {
     }
 
 
+    async getAchievementsUser (req,res) {
+        try {
+            
+            const id = req.userId
+            const achievements = await db.query("SELECT achievement_id,achievement_title,achievement_desc,achievement_img FROM achievements INNER JOIN (SELECT unnest(user_achivements) FROM users WHERE user_id = $1) as u_achievements ON u_achievements.unnest = achievements.achievement_id",[id])
+            return res.status(200).json(achievements.rows)
+            
+        }
 
+        catch(err) {
+           
+            res.status(400).json({ "message": "Произошла ошибка" })
+        }
+    }
 
 
 
