@@ -63,7 +63,9 @@ class UserController {
             }
 
 
-           
+            // if ((await db.query("SELECT * FROM users WHERE user_email = ($1)", [email])).rowCount > 0) {
+            //     return res.status(400).json({ message: "Пользователь с такой почтой уже существует" })
+            // }
 
 
             const salt = await bcrypt.genSalt(10);
