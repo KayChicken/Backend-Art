@@ -75,7 +75,7 @@ class UserController {
 
             const newPerson = await db.query('INSERT INTO users (user_name,user_surname,user_lastname,user_login,user_hashPassword,user_age,user_email,user_phone,user_photo,user_education,activationLink) VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *', [name, surname, lastname, login, hashPassword, age, email, phone, image, education, activationLink])
             const { user_id, isactivated } = newPerson.rows[0]
-            await mailService.sendActivationMail(email, `${process.env.API_URL}/activate/${activationLink}`)
+            // await mailService.sendActivationMail(email, `${process.env.API_URL}/activate/${activationLink}`)
             const tokens = tokenService.generateToken({
                 id: user_id,
                 email,
