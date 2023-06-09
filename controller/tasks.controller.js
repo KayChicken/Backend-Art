@@ -60,6 +60,7 @@ class TasksController {
                 const sendAnswer = await db.query("INSERT INTO tasks_video_answers VALUES ($1,$2,$3)",[task_video_id,id,user_answer])
                 return res.status(200).json(sendAnswer.rows)
             }
+            return res.status(200).json(isAnswee.rows)
         }
 
         catch(err) {
