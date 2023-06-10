@@ -1,8 +1,8 @@
 import {Router} from 'express'
 export const quizRoutes = new Router()
-import {QuizController} from "../controller/quiz.controller.js";
+import {quizController} from "../controller/quiz.controller.js";
 
-quizRoutes.post('quiz/create', QuizController.createQuiz);
-quizRoutes.post('/quiz/answer/add', QuizController.addAnswer);
+quizRoutes.post('quiz/create', quizController.createQuiz);
+quizRoutes.post('/quiz/answer/add', quizController.addAnswer);
 
 
