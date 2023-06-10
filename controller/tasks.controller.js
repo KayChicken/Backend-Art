@@ -40,7 +40,7 @@ class TasksController {
                 const sendAnswer = await db.query("INSERT INTO tasks_quiz_answers VALUES ($1,$2,$3)",[quiz_id,id,user_answer])
                 return res.status(200).json({"answer": sendAnswer.rows, "new_ans": true})
             }
-            return res.status(200).json({"answer" :isAnswee.rows, "new_ans": false}})
+            return res.status(200).json({"answer" :isAnswee.rows, "new_ans": false})
             
             
         }
