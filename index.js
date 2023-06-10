@@ -8,6 +8,7 @@ import cors from 'cors'
 import dotenv from 'dotenv'
 import multer from 'multer'
 import { uploadRouter } from './routes/upload.routes.js'
+import {quizRoutes} from "./routes/quiz.routes.js";
 
 const PORT = process.env.PORT || 8080
 
@@ -25,12 +26,11 @@ app.use(newsRouter)
 app.use(userRouter)
 app.use(tasksRouter)
 app.use(uploadRouter)
+app.use(quizRoutes);
 
 
 
 const server = app.listen(PORT, () => {
     const { address, port } = server.address();
     console.log(`Сервер ${address} запущен порт ${PORT}`)
-
-
 })
