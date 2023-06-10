@@ -3,12 +3,10 @@ import express from 'express'
 import { userRouter } from './routes/user.routes.js'
 import { tasksRouter } from './routes/tasks.routes.js'
 import { newsRouter } from './routes/news.routes.js'
-import { db } from './db.js'
 import cors from 'cors'
 import dotenv from 'dotenv'
 import multer from 'multer'
 import { uploadRouter } from './routes/upload.routes.js'
-import {quizRoutes} from "./routes/quiz.routes.js";
 
 const PORT = process.env.PORT || 8080
 
