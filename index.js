@@ -26,7 +26,6 @@ app.use(newsRouter)
 app.use(userRouter)
 app.use(tasksRouter)
 app.use(uploadRouter)
-app.use(quizRoutes);
 
 
 
