@@ -38,9 +38,9 @@ class TasksController {
             if (isAnswee.rowCount <= 0) {
                 const userRating = await db.query("UPDATE users SET user_rating = user_rating + 1 WHERE user_id = $1",[req.userId])
                 const sendAnswer = await db.query("INSERT INTO tasks_quiz_answers VALUES ($1,$2,$3)",[quiz_id,id,user_answer])
-                return res.status(200).json({sendAnswer.rows, "new_ans": true})
+                return res.status(200).json({"answer": sendAnswer.rows, "new_ans": true})
             }
-            return res.status(200).json({isAnswee.rows, "new_ans": false}})
+            return res.status(200).json({"answer" :isAnswee.rows, "new_ans": false}})
             
             
         }
