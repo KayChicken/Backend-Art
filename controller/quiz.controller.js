@@ -17,6 +17,7 @@ class QuizController {
 
   async addAnswer(req, res) {
     try {
+      console.log('1231231312')
       const {tasks_quizes_id, task_question, task_answers, task_correct_answer, task_correct_desc} = req.body;
       const task = await db.query(`
       insert into tasks_quiz_teachers (tasks_quizes_id, task_question, task_answers, task_correct_answer, task_correct_desc) VALUES (
