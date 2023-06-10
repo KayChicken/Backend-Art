@@ -94,8 +94,8 @@ class TasksController {
 
   async createTask(req, res) {
     try {
-      const {task_question, task_answers, task_difficult, task_correct_answer, task_correct_desc} = req.body;
-      const newTask = await db.query(`INSERT INTO tasks_quiz_teachers (task_question, task_answers, task_difficult, task_correct_answer, task_correct_desc) VALUES ${task_question} ${task_answers} {${task_difficult}} ${task_correct_answer} ${task_correct_desc}`);
+      const {task_question, task_answers, task_correct_answer, task_correct_desc} = req.body;
+      const newTask = await db.query(`INSERT INTO tasks_quiz_teachers (task_question, task_answers, task_correct_answer, task_correct_desc) VALUES ${task_question} ${task_answers} ${task_correct_answer} ${task_correct_desc}`);
       return res.status(200).json(newTask.rows);
     } catch (err) {
       return res.status(400).json({"message": "Произошла ошибка"});
