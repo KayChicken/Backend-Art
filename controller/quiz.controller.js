@@ -32,4 +32,4 @@ class QuizController {
   }
 }
 
-export const QuizController = new QuizController
+export const quizController = new QuizController
